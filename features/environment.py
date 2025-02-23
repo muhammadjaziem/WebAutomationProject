@@ -1,13 +1,20 @@
 import os
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from pages.login_page import LoginPage
 
 
 def before_all(context):
     options = webdriver.ChromeOptions()
+    options.add_argument("--headless")  # Run in headless mode for CI/CD
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     options.page_load_strategy = 'eager'
 
-    context.driver = webdriver.Chrome(options=options)
+    service = Service(ChromeDriverManager().install())  # ✅ Corrected Service usage
+
+    context.driver = webdriver.Chrome(service=service, options=options)  # ✅ Fixed WebDriver initialization
     context.driver.implicitly_wait(20)
     context.driver.maximize_window()
 
@@ -25,7 +32,8 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
-    context.driver.quit()
+    if hasattr(context, "driver") and context.driver:
+        context.driver.quit()
 
 
 def save_screenshot(context, scenario_name):
