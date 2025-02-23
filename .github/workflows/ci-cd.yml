@@ -23,7 +23,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: pip install behave selenium requests
+        run: pip install behave selenium requests webdriver-manager
 
       - name: Run Use Case 1 Tests
         run: behave --tags=usecase1
