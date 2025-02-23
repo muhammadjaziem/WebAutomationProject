@@ -29,7 +29,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install behave selenium requests webdriver-manager behave-html-formatter
+          pip install behave selenium requests webdriver-manager behave-html-report
 
       - name: Run Use Case 1 Tests
         run: behave --tags=usecase1
@@ -38,10 +38,13 @@ jobs:
         run: behave --tags=usecase2
 
       - name: Generate HTML Test Report
-        run: behave --format=html --outfile=reports/test_report.html || true
+        run: behave --junit --outfile=reports
+
+      - name: Convert JUnit to HTML
+        run: behave-html-report -i reports -o reports/html_report.html
 
       - name: Upload HTML Test Report
         uses: actions/upload-artifact@v4
         with:
           name: html-test-report
-          path: reports/test_report.html
+          path: reports/html_report.html
