@@ -1,6 +1,6 @@
 @usecase2
 Feature: User Account Verification
-  @usecase2
+
   Scenario: Verify username and email after login
     Given I am logged into the application
     When I navigate to "My user account"

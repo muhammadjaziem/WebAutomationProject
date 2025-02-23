@@ -2,7 +2,6 @@
 Feature: User Login
   As a user, I can log in to VSM using my email and password
 
-  @usecase1
   Scenario: Successful login to VSM
     Given the user is on the VSM login page
     When the user clicks the SSO login button

@@ -1,5 +1,4 @@
 from behave import given, when, then
-from pages.login_page import LoginPage
 
 
 @given('the user is on the VSM login page')
