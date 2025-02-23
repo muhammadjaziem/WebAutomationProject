@@ -22,9 +22,14 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Install Google Chrome
         run: |
-          pip install -r requirements.txt
+          sudo apt update
+          sudo apt install -y google-chrome-stable
+
+      - name: Install Dependencies
+        run: |
+          pip install behave selenium requests webdriver-manager
 
       - name: Run Use Case 1 Tests
         run: behave --tags=usecase1
