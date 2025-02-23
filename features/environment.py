@@ -7,14 +7,14 @@ from pages.login_page import LoginPage
 
 def before_all(context):
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")  # Run in headless mode for CI/CD
+    options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.page_load_strategy = 'eager'
 
-    service = Service(ChromeDriverManager().install())  # ✅ Corrected Service usage
+    service = Service(ChromeDriverManager().install())
 
-    context.driver = webdriver.Chrome(service=service, options=options)  # ✅ Fixed WebDriver initialization
+    context.driver = webdriver.Chrome(service=service, options=options)
     context.driver.implicitly_wait(20)
     context.driver.maximize_window()
 
