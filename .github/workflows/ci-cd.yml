@@ -31,11 +31,17 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run All Tests
-        run: behave --format=html --outfile=report.html || true
+      - name: Run Use Case 1 Tests
+        run: behave --tags=usecase1
 
-      - name: Upload HTML Test Report
+      - name: Run Use Case 2 Tests
+        run: behave --tags=usecase2
+
+      - name: Generate Test Report
+        run: behave --format=json --outfile=report.json || true
+
+      - name: Upload Test Report
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: report.html
+          path: report.json
