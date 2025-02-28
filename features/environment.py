@@ -13,9 +13,7 @@ def before_all(context):
     options.page_load_strategy = 'eager'
 
     service = Service(ChromeDriverManager().install())
-
     context.driver = webdriver.Chrome(service=service, options=options)
-    context.driver.implicitly_wait(20)
     context.driver.maximize_window()
 
 
