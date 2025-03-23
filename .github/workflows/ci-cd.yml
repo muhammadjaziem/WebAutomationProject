@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for Selenium Tests
+name: CI/CD Pipeline for Automation Test
 
 on:
   push:
@@ -10,38 +10,57 @@ on:
   workflow_dispatch:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Package Application
+      run: |
+        python setup.py sdist bdist_wheel
+
   test:
     runs-on: ubuntu-latest
-
+    needs: build
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
 
-      - name: Install Google Chrome
-        run: |
-          sudo apt update
-          sudo apt install -y google-chrome-stable
+    - name: Install Google Chrome
+      run: |
+        sudo apt update
+        sudo apt install -y google-chrome-stable
 
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
 
-      - name: Run Use Case 1 Tests
-        run: behave --tags=usecase1
+    - name: Run Use Case 1 Tests
+      run: behave --tags=usecase1
 
-      - name: Run Use Case 2 Tests
-        run: behave --tags=usecase2
+    - name: Run Use Case 2 Tests
+      run: behave --tags=usecase2
 
-      - name: Generate Test Report
-        run: behave --format=json --outfile=report.json || true
+    - name: Generate Test Report
+      run: behave --format=json --outfile=report.json || true
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: report.json
+    - name: Upload Test Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: report.json
